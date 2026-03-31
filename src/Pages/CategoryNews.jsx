@@ -8,13 +8,13 @@ const CategoryNews = () => {
 
     const [categoryNews, setCategoryNews] = useState([]);
     useEffect(() => {
+        if(!allNews) return;
         if (id == '0') {
             setCategoryNews(allNews);
         }
         else if (id == '1') {
-            const filteredNews = allNews.filter(news => news.others.is_today_pick == true);
+            const filteredNews = allNews.filter(news => news.others?.is_today_pick === true);
             setCategoryNews(filteredNews);
-            return;
         }
         else {
             const filteredNews = allNews.filter(news => news.category_id == id);
