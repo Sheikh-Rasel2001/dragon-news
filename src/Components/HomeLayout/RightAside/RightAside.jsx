@@ -3,7 +3,7 @@ import SocialLogin from '../../SocialLogin';
 
 const RightAside = () => {
     return (
-        <div>
+        <div className='w-full'>
             <SocialLogin></SocialLogin>
         </div>
     );
