@@ -20,30 +20,31 @@ const Root = () => {
                 <Navbar></Navbar>
             </header>
             <button onClick={() => setIsOpen(true)}
-                className='lg:hidden text-lg font-bold'
-                >
-               <FaBars />
+                className='lg:hidden text-lg font-bold fixed top-60 left-4 z-50'
+            >
+                <FaBars />
             </button>
             <main className='grid grid-cols-1 lg:grid-cols-12 mt-6 gap-4'>
-                <aside className={`
+                <aside className={` lg:sticky lg:top-2 lg:h-fit
                     fixed top-0 left-0 h-full w-64 bg-white z-50 p-4
                     transform transition-transform duration-300
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
                     md:static md:translate-x-0 md:col-span-3`}>
-                        <div className='flex justify-end mb-4 lg:hidden'>
-                            <button onClick={() => setIsOpen(false)} className='text-xl font-bold'>
-                                <IoClose />
-                            </button>
-                        </div>
+                    <div className='flex justify-end mb-4 lg:hidden'>
+                        <button onClick={() => setIsOpen(false)} className='text-xl font-bold'>
+                            <IoClose />
+                        </button>
+                    </div>
                     <LeftAside></LeftAside>
                 </aside>
                 <section className='col-span-6'>
                     <Outlet></Outlet>
                 </section>
-                <aside className='col-span-1 lg:col-span-3'>
+                <aside className='col-span-1 lg:col-span-3 lg:sticky lg:top-2 lg:h-fit'>
                     <RightAside></RightAside>
                 </aside>
             </main>
+             
         </div>
     );
 };

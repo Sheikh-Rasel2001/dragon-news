@@ -20,3 +20,8 @@ a.active {
   background-color: #E7E7E7;
   padding: 0 5px;
 }
+.nav > a.active{
+  text-decoration: underline;
+  background-color: transparent;
+  color: blue;
+}
