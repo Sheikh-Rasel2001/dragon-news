@@ -8,18 +8,21 @@ import Contact from "../Pages/Contact/Contact";
 import AuthLayout from "../Layout/AuthLayout";
 import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
+import NewsDetails from "../Pages/NewsDetails";
+import ErrorPage from "../Pages/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Root></Root>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 index: true, element: <App></App>
             },
             {
-                path: '/',
-                element: <Home></Home>
+                index: true,
+                element: <Home></Home>,
             },
             {
                 path: '/about',
@@ -32,7 +35,7 @@ const router = createBrowserRouter([
             {
                 path: '/category/:id',
                 element: <CategoryNews></CategoryNews>,
-                loader: () => fetch('/news.json')
+                loader: () => fetch('/news.json').then(res => res.json())
             }
         ],
     },
@@ -49,6 +52,11 @@ const router = createBrowserRouter([
                 element: <Register></Register>
             }
         ]
+    },
+    {
+        path: '/newsDetails/:id',
+        element: <NewsDetails></NewsDetails>,
+        loader: () => fetch('/news.json').then(res => res.json())
     }
 ])
 

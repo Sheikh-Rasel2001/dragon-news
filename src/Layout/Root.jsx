@@ -20,7 +20,7 @@ const Root = () => {
                 <Navbar></Navbar>
             </header>
             <button onClick={() => setIsOpen(true)}
-                className='lg:hidden text-lg font-bold fixed top-60 left-4 z-50'
+                className='lg:hidden text-accent bg-transparent text-5xl font-bold fixed top-4 left-4 z-50'
             >
                 <FaBars />
             </button>

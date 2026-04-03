@@ -1,9 +1,10 @@
 import React from 'react';
 import { FaEye, FaRegBookmark, FaStar } from 'react-icons/fa';
 import { IoShareSocialOutline } from 'react-icons/io5';
+import { Link } from 'react-router';
 
 const NewsCard = ({ news }) => {
-    const { title, rating, total_view, author, details } = news;
+    const { id, title, rating, total_view, author, details } = news;
     return (
         <div className='mb-4 border rounded-lg overflow-hidden shadow-md border-gray-200'>
             <div className='px-4 py-2 bg-primary flex justify-between items-center mb-4'>
@@ -27,7 +28,7 @@ const NewsCard = ({ news }) => {
             </div>
             <div className='px-3 py-4 mb-4 border-b border-gray-200'>
                 <p className='text-accent mt-3 px-3 '>{details.length > 200 ? details.slice(0, 200) + '...' : details}
-                    <span className='text-[#F75B5F] hover:underline cursor-pointer'>Read More</span>
+                    <Link to={`/newsDetails/${id}`} className='text-[#F75B5F] hover:underline cursor-pointer'>Read More</Link>
                 </p>
             </div>
 
