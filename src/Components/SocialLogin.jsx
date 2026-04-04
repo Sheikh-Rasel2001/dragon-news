@@ -1,18 +1,59 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import swimming from '../assets/swimming.png';
 import classImg from '../assets/class.png';
 import playGround from '../assets/playground.png';
 import bgImg from '../assets/bg.png';
 import { FcGoogle } from 'react-icons/fc';
+import { signInWithPopup } from 'firebase/auth';
+import auth from '../Firebase/firebase.init';
+import { useNavigate } from 'react-router';
+import AuthContext from '../provider/AuthContext';
 
 const SocialLogin = () => {
+    const {user, googleProvider, githubProvider} = useContext(AuthContext);
+    const googleLogin = googleProvider();
+    const githubLogin = githubProvider();
+
+    const navigate = useNavigate();
+
+    // log in with google auth provider 
+    const handleGoogleLogin = () => {
+        signInWithPopup(auth, googleLogin)
+            .then(result => {
+                console.log(result);
+                navigate('/category/1');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    // log in with github auth provider
+    const handleGithubLogin = () => {
+        signInWithPopup(auth, githubLogin)
+        .then(result => {
+            console.log(result);
+            navigate('/category/1');
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     return (
         <div className='w-full mx-auto'>
-            <h2 className='font-bold text-[#001931] mb-5'>Login With</h2>
+            {
+                user ? '' : <h2 className='font-bold text-[#001931] mb-5'>Login With</h2>
+            }
             <div className='space-y-2 flex flex-col justify-center items-center'>
-                <button className='btn btn-outline w-full'><FcGoogle size={24}/> Login With Google</button>
-                <button className='btn btn-outline w-full'><FaGithub size={24}/> Login With Github</button>
+                {
+                    user ? '' :
+                        <div className='space-y-2'>
+                            <button onClick={handleGoogleLogin} className='btn btn-outline w-full'><FcGoogle size={24} /> Login With Google</button>
+                            <button onClick={handleGithubLogin} className='btn btn-outline w-full'><FaGithub size={24} /> Login With Github</button>
+                        </div>
+                }
             </div>
             <div className='mt-10'>
                 <h2 className='font-bold text-[#001931] mb-5'>Find Us On</h2>

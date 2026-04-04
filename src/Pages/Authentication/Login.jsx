@@ -1,17 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import AuthContext from '../../provider/AuthContext';
 import { RiEyeCloseLine } from 'react-icons/ri';
 import { FaEyeSlash } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import auth from '../../Firebase/firebase.init';
 
 const Login = () => {
     const { loginUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const emailRef = useRef();
 
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -19,6 +22,7 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         // console.log(email, password);
+        setSuccess(false)
         setErrorMessage('');
         // password validation
         const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
@@ -30,8 +34,12 @@ const Login = () => {
         // Login user
         loginUser(email, password)
             .then(result => {
-                console.log(result);
-                toast('User Login Successfully');
+                if (!result.user.emailVerified) {
+                    alert('Please verify your email');
+                }
+                else {
+                    setSuccess(true);
+                }
                 form.reset();
 
                 navigate(location.state || '/');
@@ -39,6 +47,21 @@ const Login = () => {
             .catch(error => {
                 setErrorMessage(error.message);
             })
+    }
+
+    // send email for forget password
+    const handleForgotPassword = () => {
+        const sendEmail = emailRef.current.value;
+
+        // send email with auth
+        sendPasswordResetEmail(auth, sendEmail)
+        .then(() => {
+            alert('A password reset email is sent. Please check your email')
+        })
+        .catch(error => {
+            setErrorMessage(error.message);
+        })
+
     }
 
     return (
@@ -49,7 +72,7 @@ const Login = () => {
                     <form onSubmit={handleLogin} className="fieldset text-lg">
                         {/* email */}
                         <label className="label">Email</label>
-                        <input type="email" name='email' className="input" placeholder="Email" required />
+                        <input type="email" name='email' ref={emailRef} className="input" placeholder="Email" required />
                         {/* password */}
                         <label className="label">Password</label>
                         <div className='relative'>
@@ -63,7 +86,7 @@ const Login = () => {
                             </button>
                         </div>
                         {/* forgot password */}
-                        <div><a className="link link-hover">Forgot password?</a></div>
+                        <div onClick={handleForgotPassword}><a className="link link-hover">Forgot password?</a></div>
                         {/* submit button */}
                         <button type='submit' className="btn btn-neutral mt-4 text-lg">Login</button>
                         <p className='mt-4 text-center'>
@@ -72,6 +95,9 @@ const Login = () => {
                         </p>
                         {
                             errorMessage && <p className='text-sm text-red-500'>{errorMessage}</p>
+                        }
+                        {
+                            success && <p className='text-green-600'>You are login successfully</p>
                         }
                     </form>
                 </div>

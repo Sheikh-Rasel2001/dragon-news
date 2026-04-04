@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import AuthContext from '../../provider/AuthContext';
-import { updateProfile } from 'firebase/auth';
+import { sendEmailVerification, updateProfile } from 'firebase/auth';
 import { RiEyeCloseLine } from 'react-icons/ri';
 import { FaEyeSlash } from 'react-icons/fa';
+import auth from '../../Firebase/firebase.init';
 
 
 const Register = () => {
@@ -52,8 +53,14 @@ const Register = () => {
                     photoURL: photo
                 })
                     .then(() => console.log('Profile Updated'))
-                    .catch(error => console.log(error))
-                setSuccess(true);
+                    .catch(error => console.log(error));
+                // send email for verification
+                sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        setSuccess(true);
+                        alert('Please check your email and verified your email')
+                    })
+
                 navigate('/');
                 form.reset();
             })
