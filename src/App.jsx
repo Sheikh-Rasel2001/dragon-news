@@ -1,20 +1,13 @@
 
-import { use } from 'react';
+import { Navigate } from 'react-router';
 import './App.css'
-import Home from './Components/Home/Home';
-import { ToastContainer } from 'react-toastify';
 
-const newsPromise = fetch('/news.json').then(res => res.json());
+// const newsPromise = fetch('/news.json').then(res => res.json());
 
 function App() {
-  const allNews = use(newsPromise);
+  // const allNews = use(newsPromise);
 
-  return (
-    <>
-      <Home allNews={allNews}></Home>
-      <ToastContainer position='top-center' />
-    </>
-  )
+  return <Navigate to='/category/0'></Navigate>
 }
 
 export default App

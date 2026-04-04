@@ -7,6 +7,7 @@ import LeftAside from '../Components/HomeLayout/LeftAside/LeftAside';
 import RightAside from '../Components/HomeLayout/RightAside/RightAside';
 import { FaBars } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
+import { ToastContainer } from 'react-toastify';
 
 const Root = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ const Root = () => {
                     <RightAside></RightAside>
                 </aside>
             </main>
-             
+             <ToastContainer position='bottom-right' />
         </div>
     );
 };

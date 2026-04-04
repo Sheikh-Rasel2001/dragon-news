@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import AuthContext from '../../provider/AuthContext';
 import { updateProfile } from 'firebase/auth';
 import { RiEyeCloseLine } from 'react-icons/ri';
@@ -11,7 +11,9 @@ const Register = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState(false);
+    // after register navigate home page
+    const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -29,12 +31,12 @@ const Register = () => {
 
         // password validation
         const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/
-        if (!regex.test(password)){
+        if (!regex.test(password)) {
             setErrorMessage('Password must be at least 6 characters, uppercase, lowercase and number');
             return;
         }
         // terms and conditions validation
-        if(!terms){
+        if (!terms) {
             setErrorMessage('Please accept the Terms and Conditions');
             return;
         }
@@ -42,7 +44,7 @@ const Register = () => {
         // create user for register
         createUser(email, password)
             .then(result => {
-                
+
                 // update user profile
                 const currentUser = result.user;
                 updateProfile(currentUser, {
@@ -51,8 +53,8 @@ const Register = () => {
                 })
                     .then(() => console.log('Profile Updated'))
                     .catch(error => console.log(error))
-                console.log(result);
                 setSuccess(true);
+                navigate('/');
                 form.reset();
             })
             .catch(error => {
